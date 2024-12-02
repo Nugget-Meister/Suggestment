@@ -1,6 +1,13 @@
 let validatePassword = (a,b) => {
     // console.log("kevin")
-    let conditions = []
+    let conditions = {
+        mismatch: false,
+        sub12: false,
+        capital: false,
+        lowercase: false,
+        number: false,
+        symbol: false
+    }
     
     let capital = /[A-Z]/.test(a)
     let lowercase = /[a-z]/.test(a)
@@ -8,21 +15,26 @@ let validatePassword = (a,b) => {
     let symbol = /[$-/:-?{-~!"^_`\[\]]/.test(a)
     
     if (a != b){
-        conditions.push("mismatch")
+        conditions["mismatch"] = true;
     }    
     if (a.length < 12){
-        conditions.push("sub12")
+        conditions["sub12"] = true;
     }
     if(!capital){
-        conditions.push("capital")
+        conditions["capital"] = true;
+    }
+    if(!lowercase){
+        conditions["lowercase"] = true;
+    }
+    if(!number){
+        conditions["number"] = true;
+    }
+    if(!symbol){
+        conditions["symbol"] = true;
     }
     
-
-    console.log(capital)
-
-
-
-    console.log(conditions)
+    // console.log(capital)
+    // console.log(conditions)
     return conditions
 }
 
