@@ -4,6 +4,9 @@ import { validatePassword } from './functions';
 import PasswordBox from './subcomponent/PasswordBox';
 // import signInImg from '/public/signInImg.jpg'
 
+const imgURL = 'https://images.unsplash.com/photo-1669251921941-ae3645715017?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+
+
 const SignIn = () => {
     
     let formRef = useRef({
@@ -43,7 +46,7 @@ const SignIn = () => {
     <>
         <div className='place-content-center'>
             <div className={gridVals}>
-                <img src="src/assets/signInImg.jpg" alt="{$image}"/>
+                <img src={imgURL} alt="{$image}"/>
                 <div className='m-4 px-2'>
                     <form onSubmit={handleSubmit} className='grid grid-cols-none'>
                         <div className='my-1'>
