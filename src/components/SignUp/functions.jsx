@@ -1,5 +1,7 @@
-let URL = "localhost:8080"
-let liveURL = 'https://suggestment-be.onrender.com'
+let localURL = import.meta.env.VITE_API_LOCAL
+let liveURL = import.meta.env.VITE_API_LIVE
+
+let local = import.meta.env.VITE_API_ISLOCAL
 
 
 let validatePassword = (a,b) => {
@@ -51,7 +53,7 @@ let registerUser =  async (data) => {
         }
     }
 
-    fetch(`${URL ? URL : liveURL}`, options)
+    fetch(`${local ? localURL : liveURL}/users`, options)
 }
 
 export {

@@ -1,7 +1,10 @@
 import React from 'react';
 
 const Container = (props) => {
-    let classNames = 'grid grid-cols-2 md:container md:mx-auto bg-secondary rounded';
+
+    // props.className to overload with additional classes
+    
+    let classNames = 'grid grid-cols-2 md:container md:mx-auto bg-secondary rounded ' + props.className;
     return (
         <div className={classNames}>
             {props.children}
