@@ -1,8 +1,27 @@
-# React + Vite
+# Suggestment
+deployed link
+[deployed link](https://suggestment.netlify.app/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+link to back end
+[backend](https://github.com/Nugget-Meister/Suggestment-BE)
+## How to use
+### Environment Variables.
+The following environment variables are required.
 
-Currently, two official plugins are available:
+VITE_API_LOCAL="{Your link here}"
+VITE_API_LIVE='{Your link here}'
+VITE_API_ISLOCAL=true
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+- VITE_API_LOCAL - Your locally deployed link
+- VITE_API_LIVE - Your live deployed link
+- VITE_API_ISLOCAL - {true/false} determines whether you are using your local or deployed link
+
+
+### 
+
+If you dont have an account, you can sign up with a valid email and password combination. If you do not meet the password requirements it will not allow you to register.
+
+Otherwise, You can sign in with your credentials and it will take you to the base page.
+
+To sign out, simply close the tab.

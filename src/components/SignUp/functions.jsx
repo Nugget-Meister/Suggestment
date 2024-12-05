@@ -1,3 +1,9 @@
+let localURL = import.meta.env.VITE_API_LOCAL
+let liveURL = import.meta.env.VITE_API_LIVE
+
+let local = import.meta.env.VITE_API_ISLOCAL
+
+
 let validatePassword = (a,b) => {
     // console.log("kevin")
     let conditions = {
@@ -38,8 +44,19 @@ let validatePassword = (a,b) => {
     return conditions
 }
 
+let registerUser =  async (data) => {
+    const options = { 
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json' 
+        }
+    }
 
+    fetch(`${local ? localURL : liveURL}/users`, options)
+}
 
 export {
-    validatePassword
+    validatePassword,
+    registerUser
 }
