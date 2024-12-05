@@ -1,3 +1,7 @@
+let URL = "localhost:8080"
+let liveURL = 'https://suggestment-be.onrender.com'
+
+
 let validatePassword = (a,b) => {
     // console.log("kevin")
     let conditions = {
@@ -38,8 +42,19 @@ let validatePassword = (a,b) => {
     return conditions
 }
 
+let registerUser =  async (data) => {
+    const options = { 
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json' 
+        }
+    }
 
+    fetch(`${URL ? URL : liveURL}`, options)
+}
 
 export {
-    validatePassword
+    validatePassword,
+    registerUser
 }

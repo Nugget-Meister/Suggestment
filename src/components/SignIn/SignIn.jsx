@@ -1,110 +1,91 @@
-import React, { useEffect } from 'react';
-import { useState, useRef } from 'react';
-import { validatePassword } from './functions';
-import PasswordBox from './subcomponent/PasswordBox';
-// import signInImg from '/public/signInImg.jpg'
-
-const imgURL = 'https://images.unsplash.com/photo-1669251921941-ae3645715017?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+import React, { useState } from 'react';
+import Container from '../subcomponents/Container';
+import { useNavigate } from 'react-router';
 
 
+const imgURL = 'https://images.unsplash.com/photo-1527219525722-f9767a7f2884?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 const SignIn = () => {
-    
-    let formRef = useRef({
-        active: false,
-        name: '',
+    let navigate = useNavigate()
+    const [formData, setFormData] = useState({
         email: '',
-        password: '',
-        repeat: '',
-    })
-
-    let [formData, setFormData] = useState(formRef.current) 
-
-    let passFails = validatePassword(formRef.current.password,formRef.current.repeat)
-
+        password: ''
+    }) 
 
     const handleChange = (e) => {
-        formRef.current = {
-            ...formRef.current,
+        setFormData({
+            ...formData,
             [e.target.id]: e.target.value
-        }
-        setFormData(formRef.current)
-
-        console.log(validatePassword(formRef.current.password,formRef.current.repeat))
+        })
     }
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(formData)
 
-        //Coerce undefined into false if fail value not found
-        let hasFailed = Object.values(passFails).find(a => a == true) || false
-        console.log(formData, formRef.current)
-        console.log(hasFailed)
+        
     }
 
-    let gridVals = "grid grid-cols-2 w-full max-w-screen-xl min-w-96 md:container md:mx-auto bg-secondary rounded"
-    
     return (
-    <>
-        <div className='place-content-center'>
-            <div className={gridVals}>
-                <img src={imgURL} alt="{$image}"/>
-                <div className='m-4 px-2'>
-                    <form onSubmit={handleSubmit} className='grid grid-cols-none'>
+        <div className='place-content-center items-center h-full w-full flex'>
+            <div className='max-w-5xl'>
+            <h1>Sign In</h1>
+            <Container>
+                <div>
+                    <img 
+                        className='rounded'
+                        src={imgURL} alt="image of person" />
+                    <div className='grid place-content-center p-4 my-4'>
+                        <p className='m-2'>
+                            Don't have an account?
+                        </p>
+                        <button
+                            className='my-2 hover:bg-slate-700 hover:scale-105 transition' 
+                            onClick={()=> navigate('/signup')}>
+                            Sign Up
+                        </button>
+                    </div>
+
+                </div>
+                <div className='m-2 px-2 place-content-center'>
+                    <form 
+                        className='grid grid-cols-none'
+                        onSubmit={handleSubmit}>
                         <div className='my-1'>
-                            <div
-                                className='my-1'
-                                >Name</div>
-                            <input 
-                                required
-                                value={formData.name}
-                                id="name"
-                                onChange={handleChange}
-                                className='rounded w-full p-2 bg-gray-500' type="text" />
-                        </div>
-                        <div className='my-1'>
-                            <div
-                                className='my-1'
-                                >Email</div>
+                            <div className='py-2 mx-2 text-lg'>
+                                Email
+                            </div>
                             <input 
                                 required
                                 value={formData.email}
-                                id="email"
-                                pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                                id='email'
+                                className='rounded w-full p-2 transition focus:scale-105'
                                 onChange={handleChange}
-                                className='rounded w-full p-2' type="email" />
+                                type="text" />
                         </div>
                         <div className='my-1'>
-                            <div
-                                className='my-1'
-                                >Password</div>
+                            <div className='py-2 mx-2 text-lg'>
+                                Password
+                            </div>
                             <input 
                                 required
                                 value={formData.password}
-                                id="password"
+                                id='password'
                                 onChange={handleChange}
-                                className='rounded w-full p-2' type="password" />
-                            <div>
-                                <PasswordBox val={passFails}/>
+                                className='rounded w-full p-2 transition focus:scale-105'
+                                type="password" />
+                        </div>
+
+                            <div
+                                className='pt-2 pr-2 flex place-content-center items-center'>
+                                <button 
+                                    className='my-2 hover:bg-slate-700 hover:scale-105 transition'
+                                    type='submit'
+                                >Sign In</button>
                             </div>
-                        </div>
-                        <div className='my-1'>
-                            <div>Repeat Password</div>
-                            <input 
-                                required
-                                value={formData.repeat}
-                                id="repeat"
-                                onChange={handleChange}
-                                className='rounded w-full p-2' type="password" />
-                        </div>
-                        <div className='pt-2 pr-2 flex items-center'>
-                        </div>
-                            <button 
-                                className="my-2 hover:bg-sky-200 transition" 
-                                type='submit'>Sign Up</button>
                     </form>
                 </div>
+            </Container>
             </div>
         </div>
-    </>
     );
 }
 
