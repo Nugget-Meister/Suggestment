@@ -1,5 +1,6 @@
 # Suggestment
-
+deployed link
+[deployed link](https://suggestment.netlify.app/)
 link to back end
 [backend](https://github.com/Nugget-Meister/Suggestment-BE)
 ## How to use
