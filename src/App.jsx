@@ -18,7 +18,7 @@ function App() {
     token: delta || ''
   })
 
-  // console.log(delta)
+  console.log(delta)
 
 
   return (
