@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import Container from '../subcomponents/Container';
 import { useNavigate } from 'react-router';
+import Modal from '../subcomponents/Modal';
+import { getSignInVerification, signInUser } from '../subcomponents/apicalls';
 
 
 const imgURL = 'https://images.unsplash.com/photo-1527219525722-f9767a7f2884?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 const SignIn = () => {
     let navigate = useNavigate()
+
+    const [page, setPage] = useState({
+        showModal: false,
+        modal: (<></>)
+    })
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -19,12 +27,44 @@ const SignIn = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(formData)
-
+        setPage({
+            showModal: false,
+            modal: (<></>)
+        })
+        setTimeout(()=> {
+            signInUser(formData)
+            .then(res => {
+                if(res.message == "OK"){
+                    setPage({
+                        showModal:true,
+                        modal: (<Modal 
+                            good
+                            title='Verification Email Sent'
+                            message={(<span>A verification email has been sent. <br/> You can now safely close this tab.</span>)}
+                        />)
+                    })
+                } else {
+                    setPage({
+                        showModal:true,
+                        modal:(<Modal 
+                            bad
+                            closeAnywhere
+                            message={(<span>An error has occurred, the email and password combo may not be valid.<br />If you think this is an error, please contact site owner. <br/> <br /><div className="font-bold">Click Anywhere to Dismiss</div></span>)}
+                        />)
+                    })
+                }
+        })
+        }, 100)
         
+
+    
     }
 
+    // console.log(window.localStorage.getItem('userSessionToken'))
+
     return (
+        <>
+        {page.showModal ? page.modal : null}
         <div className='place-content-center items-center h-full w-full flex'>
             <div className='max-w-5xl'>
             <h1>Sign In</h1>
@@ -86,6 +126,7 @@ const SignIn = () => {
             </Container>
             </div>
         </div>
+        </>
     );
 }
 

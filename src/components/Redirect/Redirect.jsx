@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-const Redirect = () => {
+const Redirect = ({to}) => {
     let navigate = useNavigate()
 
     useEffect(()=>{
-        navigate('/')
+        if(to != undefined){
+            navigate(to)
+        } else {
+            navigate('/')
+        }
     }, [])
     return (
         <div>
-            lemon
+            
         </div>
     );
 }

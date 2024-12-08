@@ -2,35 +2,30 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { UserContext } from '../subcomponents/context';
 import Container from '../subcomponents/Container';
-import {getTransactions} from '../subcomponents/apicalls'
+import {getTransactions, verifyToken} from '../subcomponents/apicalls'
 // 
 
-
-
 const Home = (value) => {
-
     const navigate = useNavigate()
-    const context = useContext(UserContext)
-//   console.log(useContext(UserContext))
-//   console.log(value)
-
+    const token = window.localStorage.getItem('sessionToken')
+    const [userData, setUserData] = useState({
+        name:"",
+        email:""
+    })
     const [userTransactions, setTransactions] = useState([])
 
     useEffect(()=> {
+        verifyToken(token)
+        .then(res => {
+            console.log(res.data, res.message, res.message == 'OK')
+            if(res.message == 'OK'){
+                setUserData(res.data)
+            }
+               getTransactions(res.data.user_id, token)
+               .then(res => {setTransactions(res)})
+        })
+    }, [])
 
-       getTransactions(context.id)
-       .then(res => setTransactions(res))
-    }, [context])
-
-    if(context.token == ''){
-        navigate('/signin')
-    } else if(context.token != "DELTA") {
-        // Insert login verification here NEEDS TO BE DONE
-    }
-    if(context.token == "DELTA"){
-        context.email = "suggestment1@gmail.com"
-        context.id = "2482e649-22e0-4c4e-9e1a-caef3fc82609"
-    }
     
 
 
@@ -43,7 +38,7 @@ const Home = (value) => {
                     className='col-span-3 m-2'
                 >
                     <h1 className='text-slate-300'>
-                        Hello {context.email}
+                        Hello {userData.name}
                     </h1>
                 </div>
                 <div className='min-w-72 h-32 m-2'>
@@ -77,7 +72,8 @@ const Home = (value) => {
                             </>)}) : (
                                 <>
                                     <div>
-                                        Nothing to See here...
+                                        Attempting to load info.
+                                        Nothing to See here yet... 
                                     </div>
                                 </>)}    
                     </Container>
