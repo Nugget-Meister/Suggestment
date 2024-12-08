@@ -44,19 +44,26 @@ let validatePassword = (a,b) => {
     return conditions
 }
 
-let registerUser =  async (data) => {
-    const options = { 
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json' 
-        }
-    }
-
-    fetch(`${local ? localURL : liveURL}/users`, options)
-}
+// let registerUser =  async (data) => {
+//     const options = { 
+//         method: "POST",
+//         body: JSON.stringify(data),
+//         headers: {
+//             'Content-Type': 'application/json' 
+//         }
+//     }
+//     console.log(local, localURL)
+//     console.log(data)
+//     return fetch(`${local ? localURL : liveURL}/users`, options)
+//     .then((res) => {return res.json()})
+//     .then(json => {
+//         return json.data
+//     }).catch(error => {
+//         return {}
+//     })
+// }
 
 export {
     validatePassword,
-    registerUser
+    // registerUser
 }

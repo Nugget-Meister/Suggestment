@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import { useState, useRef } from 'react';
-import { registerUser, validatePassword } from './functions';
+import { validatePassword } from './functions';
 import { useNavigate } from 'react-router';
 import PasswordBox from '../SignUp/subcomponent/PasswordBox';
 import Container from '../subcomponents/Container';
+import Modal from '../subcomponents/Modal';
+import { registerUser } from '../subcomponents/apicalls';
+// import SuccessModal from './subcomponent/SuccessModal';
+// import FailModal from './subcomponent/FailModal';
+
 // import signInImg from '/public/signInImg.jpg'
 
 const imgURL = 'https://images.unsplash.com/photo-1669251921941-ae3645715017?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -12,6 +17,11 @@ const imgURL = 'https://images.unsplash.com/photo-1669251921941-ae3645715017?q=8
 const SignUp = () => {
     
 const navigate = useNavigate()
+
+    let [pageState, setPageState] = useState({
+        showModal: false,
+        modal: (<></>)
+    })
 
     let formRef = useRef({
         active: false,
@@ -25,6 +35,11 @@ const navigate = useNavigate()
 
     let passFails = validatePassword(formRef.current.password,formRef.current.repeat)
 
+    useEffect(()=> {
+        console.log('state changed')
+    },pageState)
+
+    
     const handleChange = (e) => {
         formRef.current = {
             ...formRef.current,
@@ -32,18 +47,46 @@ const navigate = useNavigate()
         }
         setFormData(formRef.current)
 
-        console.log(validatePassword(formRef.current.password,formRef.current.repeat))
+        // console.log(validatePassword(formRef.current.password,formRef.current.repeat))
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-
         //Coerce undefined into false if fail value not found
         let hasFailed = Object.values(passFails).find(a => a == true) || false
-        // console.log(formData, formRef.current)
-        // console.log(hasFailed)
-
+        console.log(hasFailed)
         if(!hasFailed){
-            registerUser(formRef.current)
+            // Reset state then reappply after delay to force refresh
+            setPageState({
+                showModal: false,
+                modal: (<></>)
+            })
+            setTimeout(()=>{ 
+                registerUser(formRef.current)
+                .then((res) => {
+                    if(res.message == "OK"){
+                        console.log('gottem')
+                        setPageState({
+                            showModal: true,
+                            modal: (<Modal 
+                                linkTo='/signin' 
+                                linkText='Back to Login'
+                                good
+                                title='Verification Email Sent'
+                                message={(<span>A verification email has been sent. <br/> You can now safely close this tab or return to login.</span>)}
+                        />)})
+                    } else {
+                        console.log('failed')
+                        setPageState({
+                            showModal:true,
+                            modal:(<Modal 
+                                bad
+                                closeAnywhere
+                                message={(<span>An error has occurred, the email may be in use. <br />If you think this is an error, please contact site owner. <br/> <br /><div className="font-bold">Click Anywhere to Dismiss</div></span>)}
+                            />)
+                        })
+                    }
+                })
+            })
         }
     }
 
@@ -51,6 +94,8 @@ const navigate = useNavigate()
     
     return (
     <>
+
+        {pageState.showModal ? pageState.modal: null}
         <div className='place-content-center items-center w-full h-full flex'>
             <div className='max-w-5xl'>
             <h1
@@ -124,10 +169,11 @@ const navigate = useNavigate()
                                 type="password" />
                         </div>
                         <div className='pt-2 pr-2 flex place-content-center items-center'>
-                            
                             <button 
                                 className="my-2 hover:bg-slate-700 hover:scale-105 transition" 
-                                type='submit'>Sign Up</button>
+                                type='submit'>
+                                    Sign Up
+                            </button>
                         </div>
                     </form>
                 </div>

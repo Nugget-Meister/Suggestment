@@ -14,7 +14,7 @@ const PasswordBox = ({val}) => {
     // console.log(val)
     // val.current = validatePassword(form.password,form.repeat)
 
-    console.log(val)
+    // console.log(val)
 
 
     return (
