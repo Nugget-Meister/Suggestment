@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom"
 import './App.css'
 import Home from './components/Home/Home'
@@ -9,33 +9,44 @@ import Verify from './components/Verify/Verify.jsx'
 
 
 import {UserContext} from './components/subcomponents/context.js'
+import VerifySignIn from './components/VerifySignIn/VerifySignIn.jsx'
+import { verifyToken } from './components/subcomponents/apicalls.js'
+import PrivateRoute from './components/subcomponents/PrivateRoute.jsx'
 
 const delta = import.meta.env.VITE_API_DELTA
 
 function App() {
 
-  const [userState, setUserState] = useState({
-    email: null,
-    id: null,
-    token: delta || ''
-  })
+  const sessionToken = window.localStorage.getItem('sessionToken')
+  // console.log(sessionToken)
 
-  console.log(delta)
+  useEffect(() => {
+    verifyToken(sessionToken)
+    .then(res => {
+      // console.log(res)
+      if(res.message == "OK"){
+        window.localStorage.setItem('valid', true)
+      } else {
+        window.localStorage.setItem('valid', false)
+      }
+    })
+  },[sessionToken])
+
+
 
 
   return (
     <>
       <Router>
-    <UserContext.Provider value={userState}>
         <Routes>
-          <Route path={'/'} element={<Home/>} />
+          <Route path={'/'} element={<PrivateRoute path={'/'} element={<Home/>}/>} />
           <Route path={'/signin'} element={<SignIn/>}/>
+          <Route path={'/signin/:token'} element={<VerifySignIn/>}/>
           <Route path={'/signup'} element={<SignUp/>}/>
           <Route path={'/verify/'} element={<Verify/>}/>
           <Route path={'/verify/:id'} element={<Verify/>}/>
           <Route path={'/*'} element={<Redirect/>}/>
         </Routes>
-    </UserContext.Provider>
       </Router>
     </>
   )
