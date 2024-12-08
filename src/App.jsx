@@ -5,6 +5,8 @@ import Home from './components/Home/Home'
 import Redirect from './components/Redirect/Redirect'
 import SignUp from './components/SignUp/SignUp'
 import SignIn from './components/SignIn/SignIn'
+import Verify from './components/Verify/Verify.jsx'
+
 
 import {UserContext} from './components/subcomponents/context.js'
 
@@ -29,6 +31,8 @@ function App() {
           <Route path={'/'} element={<Home/>} />
           <Route path={'/signin'} element={<SignIn/>}/>
           <Route path={'/signup'} element={<SignUp/>}/>
+          <Route path={'/verify/'} element={<Verify/>}/>
+          <Route path={'/verify/:id'} element={<Verify/>}/>
           <Route path={'/*'} element={<Redirect/>}/>
         </Routes>
     </UserContext.Provider>
