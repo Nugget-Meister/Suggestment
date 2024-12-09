@@ -24,7 +24,8 @@ const ButtonLogout = () => {
     return (
     <>
         {modalList.map(modal => {return modal})}
-        <button onClick={() => {logout()}}> 
+        <button className='bg-slate-400 transition hover:scale-105 hover:bg-slate-700'
+            onClick={() => {logout()}}> 
             Logout
         </button>
     </>

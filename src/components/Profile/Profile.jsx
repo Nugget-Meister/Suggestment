@@ -81,7 +81,7 @@ const Profile = () => {
             {modalList.length > 0 ? modalList.map(modal => modal): null}
             <div className={`h-full p-12 transition ${classState.opacity} ${classState.scale}`}>
                 <Container className='grid-cols-1 h-4/5'>
-                    <div className='grid place-content-center text-center w-auto'>
+                    <div className='grid col-span-2 place-content-center text-center w-auto'>
                         <h1>{userData.name}</h1>
                         <h1 className='text-base'>{userData.email}</h1>
 
