@@ -35,10 +35,6 @@ const navigate = useNavigate()
 
     let passFails = validatePassword(formRef.current.password,formRef.current.repeat)
 
-    useEffect(()=> {
-        console.log('state changed')
-    },pageState)
-
     
     const handleChange = (e) => {
         formRef.current = {
@@ -49,6 +45,7 @@ const navigate = useNavigate()
 
         // console.log(validatePassword(formRef.current.password,formRef.current.repeat))
     }
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         //Coerce undefined into false if fail value not found

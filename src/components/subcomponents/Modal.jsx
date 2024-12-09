@@ -6,7 +6,9 @@ import {GoodSVG, BadSVG} from './ModalSVG'
 
 const Modal = (props) => {
 
-    // link, linkTo, title, message, closeAnywhere
+    // link, linkTo, title, message, closeAnywhere, action
+
+   
 
     let navigate = useNavigate()
     let [classState, setClassState] = useState({
@@ -54,8 +56,6 @@ const Modal = (props) => {
             }, 300)
         
     },[])
-
-
 
     return (
         <>
