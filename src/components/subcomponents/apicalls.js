@@ -3,7 +3,9 @@ let liveURL = import.meta.env.VITE_API_LIVE
 let isLocal = import.meta.env.VITE_API_ISLOCAL
 
 
-let currentURL = isLocal ? localURL : liveURL;
+let currentURL = isLocal == 'true' ? localURL : liveURL;
+isLocal == 'true' ? console.log("Warning: Local mode engaged."): null
+
 
 let registerUser =  async (data) => {
     const options = { 
