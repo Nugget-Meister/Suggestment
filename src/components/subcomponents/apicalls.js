@@ -99,7 +99,7 @@ const getTransactions = async (id, token) => {
 }
 
 
-const verifyToken = (token) => {
+const verifyToken = async (token) => {
     const options = {
         headers: {
             Authorization: "Bearer " + token
@@ -111,8 +111,45 @@ const verifyToken = (token) => {
     .then(res => {return res.json()})
     .then(json => {return json})
     .catch(error => {
-        console.log(error)
+        console.log("Unable to validate sync.")
+        return false
     })
+}
+
+const resetPasswordRequest = async (token) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + token
+        }
+    }
+
+    return fetch(`${currentURL}/users/reset`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to send email")
+        return false
+    })
+}
+
+const resetUserPassword = async (data, token) => {
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            Authorization: "Bearer " + token,
+            'Content-Type': 'application/json' 
+        }
+    }
+
+    return fetch(`${currentURL}/users/reset`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to send email")
+        return false
+    })
+
 }
 
 export {
@@ -121,5 +158,7 @@ export {
     registerUser,
     signInUser,
     getSignInVerification,
-    verifyToken
+    verifyToken,
+    resetPasswordRequest,
+    resetUserPassword,
 }
