@@ -52,7 +52,7 @@ const Home = (value) => {
                 </div>
                 <div className='min-w-32 h-32 m-2 col-span-4 sm:col-span-1 lg:col-span-2'>
                     <Container className='p-2 h-full grid-cols-1 place-content-center'>
-                        <div className='flex place-content-end px-6 sm:px-2 sm:place-content-start'>
+                        <div className='flex place-content-end px-6 col-span-2 sm:px-2 sm:place-content-start'>
                             <div>
                                 <div className='text-end sm:text-start'>
                                     Your Income 
@@ -68,7 +68,7 @@ const Home = (value) => {
                 </div>
                 <div className='m-2 col-span-1 sm:col-span-2'>
                     <Container className='p-2 h-full grid-cols-1 place-content-center'>
-                        <div className='flex place-content-end px-6'>
+                        <div className='flex place-content-end col-span-2 px-6'>
                             <div >
                                 <div className='text-end'>
                                     Your Balance
