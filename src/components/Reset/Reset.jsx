@@ -35,7 +35,7 @@ const Reset = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(formData)
+        // console.log(formData)
         let hasFailed = Object.values(passFails).find(a => a == true) || false
         if(!hasFailed) {
             resetUserPassword(formData, token)
