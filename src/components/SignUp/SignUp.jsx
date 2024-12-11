@@ -45,7 +45,7 @@ const navigate = useNavigate()
 
         // console.log(validatePassword(formRef.current.password,formRef.current.repeat))
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault()
         //Coerce undefined into false if fail value not found
@@ -107,7 +107,7 @@ const navigate = useNavigate()
                             Already have an account?
                         </p>
                         <button
-                            className='my-2 hover:bg-slate-700 hover:scale-105 transition' 
+                            className='my-2 bg-slate-600 hover:bg-slate-700 hover:scale-105 transition' 
                             onClick={()=> navigate('/signin')}>
                             Sign In
                         </button>
@@ -124,7 +124,7 @@ const navigate = useNavigate()
                                 value={formData.name}
                                 id="name"
                                 onChange={handleChange}
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 type="text" />
                         </div>
                         <div className='my-1'>
@@ -137,7 +137,7 @@ const navigate = useNavigate()
                                 id="email"
                                 pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
                                 onChange={handleChange}
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 type="email" />
                         </div>
                         <div className='my-1'>
@@ -149,7 +149,7 @@ const navigate = useNavigate()
                                 value={formData.password}
                                 id="password"
                                 onChange={handleChange}
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 type="password" />
                             <div>
                                 <PasswordBox val={passFails}/>
@@ -162,12 +162,12 @@ const navigate = useNavigate()
                                 value={formData.repeat}
                                 id="repeat"
                                 onChange={handleChange}
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 type="password" />
                         </div>
                         <div className='pt-2 pr-2 flex place-content-center items-center'>
                             <button 
-                                className="my-2 hover:bg-slate-700 hover:scale-105 transition" 
+                                className="my-2 bg-slate-600 hover:bg-slate-700 hover:scale-105 transition" 
                                 type='submit'>
                                     Sign Up
                             </button>

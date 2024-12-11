@@ -151,8 +151,77 @@ const resetUserPassword = async (data, token) => {
         console.log("Unable to send email")
         return false
     })
-
 }
+
+const getTransaction =  async (id, token) => {
+    const options = {
+        headers: {
+            Authorization: "Bearer " + token,
+        }
+    }
+
+    return fetch(`${currentURL}/transactions/${id}`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to get transaction")
+        return false
+    })
+}
+const createTransaction = async (data, token) => {
+    const options = {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            Authorization: "Bearer " + token,
+            'Content-Type': 'application/json' 
+        }
+    }
+
+    return fetch(`${currentURL}/transactions`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to send email")
+        return false
+    })
+}
+const updateTransaction = async (data, token) => {
+    const options = {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+            Authorization: "Bearer " + token,
+            'Content-Type': 'application/json' 
+        }
+    }
+
+    return fetch(`${currentURL}/transactions/${data.transaction_id}`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to update transaction.")
+        return false
+    })
+}
+
+const deleteTransaction = async (id, token) => {
+    const options = {
+        method: "DELETE",
+        headers: {
+            Authorization: "Bearer " + token,
+        }
+    }
+
+    return fetch(`${currentURL}/transactions/${id}`, options)
+    .then(res => {return res.json()})
+    .then(json => {return json})
+    .catch(error => {
+        console.log("Unable to delete transaction")
+        return false
+    })
+}
+
 
 export {
     getTransactions,
@@ -163,4 +232,8 @@ export {
     verifyToken,
     resetPasswordRequest,
     resetUserPassword,
+    getTransaction,
+    createTransaction,
+    updateTransaction,
+    deleteTransaction
 }

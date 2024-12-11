@@ -71,7 +71,7 @@ const Reset = () => {
     return (
         <>
             {modalList.length > 0 ? modalList.map(modal => modal) : null}
-            <div className='place-content-center items-center w-full h-full flex'>
+            <div className='place-content-center items-center w-full h-full flex '>
                 <div className='max-w-5xl'>
                     <h1 className='p-4'>Reset Password</h1>
                     <Container>
@@ -91,7 +91,7 @@ const Reset = () => {
                                     value={formData.password}
                                     id="password"
                                     onChange={handleChange}
-                                    className='rounded w-full p-2 transition focus:scale-105'
+                                    className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                     type="password" />
                                 <div>
                                     <PasswordBox val={passFails}/>
@@ -104,12 +104,12 @@ const Reset = () => {
                                     value={formData.repeat}
                                     id="repeat"
                                     onChange={handleChange}
-                                    className='rounded w-full p-2 transition focus:scale-105'
+                                    className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                     type="password" />
                             </div>
                             <div className='pt-2 pr-2 flex place-content-center items-center'>
                                 <button 
-                                    className="my-2 bg-red-400 hover:bg-red-700 hover:scale-105 transition" 
+                                    className="my-2 bg-red-400 hover:bg-red-700 hover:scale-105 transition " 
                                     type='submit'>
                                         Reset Password
                                 </button>
