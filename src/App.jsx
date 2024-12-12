@@ -14,6 +14,7 @@ import { verifyToken } from './components/subcomponents/apicalls.js'
 import PrivateRoute from './components/subcomponents/PrivateRoute.jsx'
 import Profile from './components/Profile/Profile.jsx'
 import Reset from './components/Reset/Reset.jsx'
+import Transaction from './components/Transaction/Transaction.jsx'
 
 const delta = import.meta.env.VITE_API_DELTA
 
@@ -42,7 +43,7 @@ function App() {
       <Router>
         <Routes>
           <Route path={'/'} element={<PrivateRoute path={'/'} element={<Home/>}/>} />
-          <Route path={'/profile'} element={<PrivateRoute path={'/'} element={<Profile/>}/>} />
+          <Route path={'/transaction/:id'} element={<PrivateRoute path={'/'} element={<Transaction/>}/>} />          <Route path={'/profile'} element={<PrivateRoute path={'/'} element={<Profile/>}/>} />
           <Route path={'/reset/:token'} element={<Reset/>}/>
           <Route path={'/signin'} element={<SignIn/>}/>
           <Route path={'/signin/:token'} element={<VerifySignIn/>}/>

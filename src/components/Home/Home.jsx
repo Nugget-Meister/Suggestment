@@ -74,7 +74,7 @@ const Home = (value) => {
                                     Your Balance
                                 </div>
                                 <h1 >
-                                    ${userTransactions.reduce((a,b) => a + Number(b.amount),0).toFixed(2)}
+                                    ${userTransactions.length > 0 ? userTransactions.reduce((a,b) => a + Number(b.amount),0).toFixed(2): 0}
                                 </h1>
                             </div>
                         </div>
@@ -97,7 +97,9 @@ const Home = (value) => {
                         <div className='col-span-4 bg-slate-500 p-4-3-2'>
                             {userTransactions.length > 0 ? userTransactions.map((item)=> {return(
                                 <>
-                                <div className='grid px-2 p-1 col-span-2 grid-cols-2 sm:grid-cols-4 rounded '>
+                                <div 
+                                    onClick={() => navigate(`/transaction/${item.transaction_id}`)}
+                                    className='grid px-2 p-1 col-span-2 grid-cols-2 sm:grid-cols-4 rounded hover:bg-slate-600'>
                                     <div>
                                         {item.details}
                                     </div>

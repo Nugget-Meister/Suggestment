@@ -49,7 +49,7 @@ const SignIn = () => {
                         modal:(<Modal 
                             bad
                             closeAnywhere
-                            message={(<span>An error has occurred, the email and password combo may not be valid.<br />If you think this is an error, please contact site owner. <br/> <br /><div className="font-bold">Click Anywhere to Dismiss</div></span>)}
+                            message={(<span>An error has occurred, the email and password combo may not be valid.<br />If you think this is an error, please contact site owner. <br/> <br /><span className="font-bold">Click Anywhere to Dismiss</span></span>)}
                         />)
                     })
                 }
@@ -78,7 +78,7 @@ const SignIn = () => {
                             Don't have an account?
                         </p>
                         <button
-                            className='my-2 hover:bg-slate-700 hover:scale-105 transition' 
+                            className='my-2 bg-slate-600 hover:bg-slate-700 hover:scale-105 transition' 
                             onClick={()=> navigate('/signup')}>
                             Sign Up
                         </button>
@@ -97,7 +97,7 @@ const SignIn = () => {
                                 required
                                 value={formData.email}
                                 id='email'
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 onChange={handleChange}
                                 type="text" />
                         </div>
@@ -110,14 +110,14 @@ const SignIn = () => {
                                 value={formData.password}
                                 id='password'
                                 onChange={handleChange}
-                                className='rounded w-full p-2 transition focus:scale-105'
+                                className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                 type="password" />
                         </div>
 
                             <div
                                 className='pt-2 pr-2 flex place-content-center items-center'>
                                 <button 
-                                    className='my-2 hover:bg-slate-700 hover:scale-105 transition'
+                                    className='my-2 bg-slate-600 hover:bg-slate-700 hover:scale-105 transition '
                                     type='submit'
                                 >Sign In</button>
                             </div>
