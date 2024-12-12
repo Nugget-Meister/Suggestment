@@ -74,7 +74,7 @@ const Home = (value) => {
                                     Your Balance
                                 </div>
                                 <h1 >
-                                    ${userTransactions.reduce((a,b) => a + Number(b.amount),0).toFixed(2)}
+                                    ${userTransactions.length > 0 ? userTransactions.reduce((a,b) => a + Number(b.amount),0).toFixed(2): 0}
                                 </h1>
                             </div>
                         </div>
