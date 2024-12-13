@@ -7,12 +7,14 @@ const PrivateRoute = (props) => {
     // console.log("private")
 
     const sessionToken = window.localStorage.getItem('sessionToken')
+    const user_id = window.localStorage.getItem('user_id')
 
     useEffect(() => {
         verifyToken(sessionToken)
         .then(res => {
         if(res.message == "OK" && res != false){
             // console.log('success')
+            user_id == '' ? null : window.localStorage.setItem('user_id', res.data.user_id)
             window.localStorage.setItem('valid', true)
         } else {
             // console.log('bad')

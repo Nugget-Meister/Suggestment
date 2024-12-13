@@ -6,7 +6,7 @@ import {GoodSVG, BadSVG} from './ModalSVG'
 
 const Modal = (props) => {
 
-    // link, linkTo, title, message, closeAnywhere, action
+    // link, linkTo, title, message, closeAnywhere, action, actionColor, actionHover
 
    
 
@@ -54,8 +54,8 @@ const Modal = (props) => {
                     scale:'scale-100'
                 })
             }, 300)
-        
     },[])
+
 
     return (
         <>
@@ -86,7 +86,7 @@ const Modal = (props) => {
                         </div>
                     </div>
                     </div>
-                    {props.linkTo || props.action ? (<>
+                    {props.linkTo ? (<>
                         <div className="bg-gray-50 px-4 py-3 flex w-full place-content-center">
                             <button 
                                 type="button" 
@@ -94,6 +94,21 @@ const Modal = (props) => {
                                 className="flex justify-center rounded-md bg-slate-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all w-40 hover:w-72 hover:bg-slate-500">{props.linkText ? props.linkText : "Button"}</button>
                         </div>
                     </>) :null}
+                    {props.action ? 
+                        <div className="bg-gray-50 px-4 py-3 flex w-full place-content-center">
+                            <button 
+                                type="button" 
+                                onClick={()=>{props.action()}}
+                                className={`mx-1 flex justify-center rounded-md  ${props.actionColor ? props.actionColor : 'bg-slate-600'} ${props.actionHover ? props.actionHover : 'bg-slate-700'} px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all w-40 hover:w-72`}>
+                                    {props.linkText ? props.linkText : "Button"}
+                            </button>
+                            <button 
+                                onClick={()=>{dismissTo(null)}}
+                                className={`mx-1 flex justify-center rounded-md bg-slate-400 hover:bg-slate-700 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all w-40 hover:w-72`}>
+                                Cancel
+                            </button>
+                        </div>
+                    : null}
                 </div>
                 </div>
             </div>
