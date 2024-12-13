@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Container from '../subcomponents/Container';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { 
     getTransaction,    
     createTransaction,
@@ -19,6 +19,7 @@ import Modal from '../subcomponents/Modal';
 
 const Transaction = (props) => {
     let id = useParams().id
+    const navigate = useNavigate()
 
     const sessionToken = window.localStorage.getItem('sessionToken')
 
@@ -26,6 +27,8 @@ const Transaction = (props) => {
         editMode: false
     })
     
+
+    //Draw from this to set form edit data. Origin
     const [transactionData, setTransactionData] = useState({
         transaction_id: '',
         details: '',
@@ -33,20 +36,17 @@ const Transaction = (props) => {
         amount: '',
         date: '',
     })
+
+    // Data to be modified and sent, stored separately to allow for refresh on edit cancels.
     const [formData, setFormData] = useState({
-        transactionData: '',
+        transaction_id: '',
         details: '',
         category: '',
         amount: '',
         date: '',
     })
 
-    const [modalList, setModalList] = useState([
-    <Modal
-        message='Delete Entry?'
-        action={()=>{console.log('womp')}}
-        />
-])
+    const [modalList, setModalList] = useState([])
 
     useEffect(()=>{
         // console.log(id)
@@ -57,33 +57,129 @@ const Transaction = (props) => {
                 if(res.data.transaction_id){
                     setTransactionData(res.data)
                     setFormData(res.data)
+                } else {
+                    navigate('/')
                 }
             })
         }
     },[])
 
+    // Used to keep data exposed topside despite sending action in.
+    // This needs a better naming convention
+    const transactionHandler = () => {
+        // console.log("Hit transactionhandler")
+        updateTransaction(formData, sessionToken)
+        .then(res => {
+            if(res.message == "OK"){
+                setModalList([...modalList,
+                    <Modal
+                        key={modalList.length}
+                        message='Successfully Edited Transaction'
+                        good
+                        linkText='Back to Transactions'
+                        linkTo='/'
+                        />
+                ])
+            } else {
+                setModalList([...modalList,
+                    <Modal
+                        key={modalList.length}
+                        message='An error has occurred. Please try again later. If the issue persists contact website owner.'
+                        bad
+                        linkText='Back to Transactions'
+                        linkTo='/'
+                        />
+                ])
+            }
+        })
+    }
+
+    const deleteHandler = () => {
+        // console.log("Hit transactionhandler")
+        deleteTransaction(formData.transaction_id, sessionToken)
+        .then(res => {
+            console.log(res)
+            if(res.message == "OK"){
+                setModalList([...modalList,
+                    <Modal
+                        key={modalList.length}
+                        message='Successfully Deleted Transaction'
+                        good
+                        linkText='Back to Transactions'
+                        linkTo='/'
+                        />
+                ])
+            } else {
+                setModalList([...modalList,
+                    <Modal
+                        key={modalList.length}
+                        message='An error has occurred. Please try again later. If the issue persists contact website owner.'
+                        bad
+                        linkText='Back to Transactions'
+                        linkTo='/'
+                        />
+                ])
+            }
+        })
+    }
+
+
+    // Handlers for buttons, original invokers
+   
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.id]: e.target.value
         })
     }
-    const handleSubmit = (e) => {
 
+    // 
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setModalList([...modalList,
+            <Modal
+            key={modalList.length}
+            message='Confirm Edit?'
+            action={()=>transactionHandler()}
+            actionColor='bg-blue-500'
+            actionHover='hover:bg-blue-700'
+            linkText="Confirm"
+            />
+        ])
     }
 
+    const handleDelete = () => {
+        setModalList([...modalList,
+            <Modal
+            key={modalList.length}
+            message='Are you sure you want to delete this?'
+            action={()=>deleteHandler()}
+            actionColor='bg-red-500'
+            actionHover='hover:bg-red-700'
+            linkText="Confirm"
+            />
+        ])
+    }
+
+    // console.log(modalList)
     // console.log(pageState.editMode == true)
     return (
         <>
-        {modalList.length > 0 ? modalList.map(modal => modal) : null}
+        {modalList.length > 0 ? modalList.map((modal) => modal) : null}
 
         <div className='place-content-center items-center h-full w-full flex'>
             <div className='w-[1020px] min-w-96'>
                 {/* <h1 className='py-2'>Edit Entry</h1> */}
-                <Container className='grid-cols-2 text-right transition-all h-[450px]'>
-                    <div className='place-content-center'>
+                <Container className='relative grid-cols-2 text-right transition-all h-[450px]'>
+                    <button 
+                        onClick={()=> navigate('/')}
+                        className='rounded-sm absolute top-0 right-0 md:left-0 bg-slate-500 transition-all w-[120px] hover:w-[200px] hover:bg-slate-700 float-left m-2 md:m-0 px-6'>
+                        {'< Back'}
+                    </button>
+                    <div className='hidden place-content-center md:inline'>
                         <img 
-                            className='w-[512px] hidden md:inline rounded'
+                            className='w-[512px] overflow:hidden hidden md:inline rounded'
                             src={imgURLs[transactionData.category]} alt="" />
                     </div>
                     <div 
@@ -107,7 +203,7 @@ const Transaction = (props) => {
                                 <div 
                                     className='bottom-0 right-0 p-4'>
                                     <button
-                                        onClick={()=>{deleteTransaction()}}
+                                        onClick={handleDelete}
                                         className='bg-red-400 m-2 transition hover:bg-red-700'>Delete</button>
                                     <button 
                                         onClick={()=> {setPageState({...pageState, editMode: !pageState.editMode})}}
@@ -126,7 +222,7 @@ const Transaction = (props) => {
                                     required
                                     value={formData.date.split('T')[0]}
                                     id='date'
-                                    className='rounded w-full p-2 transition hover:scale-105 focus:scale-105 bg-slate-800'
+                                    className={`rounded w-full p-2 transition hover:scale-105 focus:scale-105 bg-slate-800`}
                                     onChange={handleChange}
                                     type="date" />
                             </div>
@@ -139,7 +235,7 @@ const Transaction = (props) => {
                                     value={formData.details}
                                     id='details'
                                     onChange={handleChange}
-                                    className='rounded w-full p-2 transition hover:scale-105 focus:scale-105 bg-slate-800'
+                                    className='rounded w-full p-2 transition-all hover:scale-105 focus:scale-105 bg-slate-800'
                                     type="text" />
                             </div>
                             <div className='my-1'>
@@ -182,14 +278,14 @@ const Transaction = (props) => {
                             <div className='flex py-2 place-content-end'>
                                 <button
                                     type='submit'
-                                    onClick={()=>{updateTransaction(formData)}}
+                                    onClick={handleSubmit}
                                     className='bg-blue-500 m-1 transition hover:bg-blue-700'>Save Edit</button>
                                 <button 
                                     onClick={()=> {
                                         setPageState({...pageState, editMode: !pageState.editMode})
                                         setFormData({...transactionData})
                                     }}
-                                    className='bg-slate-500 m-1 transition hover:bg-slate-700'>Cancel Edit</button>
+                                    className='bg-slate-500 m-1 transition hover:scale-105 hover:bg-slate-700'>Cancel Edit</button>
                             </div>
                         </form>
                         </>}
