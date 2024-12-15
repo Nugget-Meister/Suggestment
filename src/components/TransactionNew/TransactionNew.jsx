@@ -136,6 +136,7 @@ const TransactionNew = () => {
                                     onChange={handleChange}
                                     value={formData.category}
                                 >
+
                                     <option value="BILL">Bill</option>
                                     <option value="EXPENSE">Expense</option>
                                     <option value="PAYMENT">Payment</option>

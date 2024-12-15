@@ -35,6 +35,7 @@ const Transaction = (props) => {
         category: '',
         amount: '',
         date: '',
+        type: ''
     })
 
     // Data to be modified and sent, stored separately to allow for refresh on edit cancels.
@@ -44,6 +45,7 @@ const Transaction = (props) => {
         category: '',
         amount: '',
         date: '',
+        type: ''
     })
 
     const [modalList, setModalList] = useState([])
@@ -137,6 +139,7 @@ const Transaction = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        // console.log(formData)
         setModalList([...modalList,
             <Modal
             key={modalList.length}
@@ -180,24 +183,27 @@ const Transaction = (props) => {
                     <div className='hidden place-content-center md:inline'>
                         <img 
                             className='w-[512px] overflow:hidden hidden md:inline rounded'
-                            src={imgURLs[transactionData.category]} alt="" />
+                            src={imgURLs[transactionData.category] || imgURLs.BILL} alt="" />
                     </div>
                     <div 
                         className='col-span-2 md:col-span-1 relative place-content-center'>
                         {pageState.editMode == false ?
                             <>
                                 <div className='p-5 grid'>
+                                    <div className='p-2 text-2xl font-bold'>
+                                        {transactionData.type}
+                                    </div>
                                     <div className='p-2 font-bold text-4xl '>
                                         {transactionData.date.split('T')[0]}
+                                    </div>
+                                    <div className='p-2 text-2xl '>
+                                        {transactionData.details}
                                     </div>
                                     <div className='p-2'>
                                         {transactionData.category}
                                     </div>
                                     <div className='p-1 px-2 text-2xl font-bold'>
                                         ${transactionData.amount}
-                                    </div>
-                                    <div className='p-2 text-2xl '>
-                                        {transactionData.details}
                                     </div>
                                 </div>
                                 <div 
@@ -214,8 +220,9 @@ const Transaction = (props) => {
                         <form 
                             className='grid grid-cols-none text-left px-4'
                             onSubmit={handleSubmit}>
+                            
                             <div className='my-1'>
-                                <div className='py-2 mx-2 text-lg'>
+                                <div className='m-1 text-lg'>
                                     Date
                                 </div>
                                 <input 
@@ -226,8 +233,28 @@ const Transaction = (props) => {
                                     onChange={handleChange}
                                     type="date" />
                             </div>
-                            <div className='my-1'>
-                                <div className='py-2 mx-2 text-lg'>
+                            <div className='mt-2'>  
+                                <div className='flex place-content-center'>
+                                    <div className='p-2 place-items-center'>
+                                        <span className='p-2'>Payment</span>
+                                        <input 
+                                            onChange={(e)=>setFormData({...formData, type:'PAYMENT'})}
+                                            checked={formData.type == 'PAYMENT'}
+                                            className='appearance-none transition-all w-4 h-4 bg-gray-100 rounded-full checked:bg-slate-700 checked:ring-slate-100 checked:ring-2 focus:ring-2'
+                                            type="radio" name="type" id="type" value='PAYMENT'/>
+                                    </div>
+                                    <div className='p-2  place-items-center'>
+                                        <span className='p-2'>Expense</span>
+                                        <input 
+                                            onChange={(e)=>setFormData({...formData, type:'EXPENSE'})}
+                                            checked={formData.type == 'EXPENSE'}
+                                            className='appearance-none transition-all w-4 h-4 bg-gray-100 rounded-full checked:bg-slate-700 checked:ring-slate-100 checked:ring-2 focus:ring-2'
+                                            type="radio" name="type" id="type" value='EXPENSE'/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className=''>
+                                <div className='m-1 text-lg'>
                                     Details
                                 </div>
                                 <input 
@@ -238,8 +265,9 @@ const Transaction = (props) => {
                                     className='rounded w-full p-2 transition-all hover:scale-105 focus:scale-105 bg-slate-800'
                                     type="text" />
                             </div>
-                            <div className='my-1'>
-                                <div className='py-2 mx-2 text-lg'>
+                            
+                            <div className=''>
+                                <div className='m-1 text-lg'>
                                     Category
                                 </div>
                                 <select
@@ -249,13 +277,23 @@ const Transaction = (props) => {
                                     onChange={handleChange}
                                     value={formData.category}
                                 >
-                                    <option value="BILL">Bill</option>
-                                    <option value="EXPENSE">Expense</option>
-                                    <option value="PAYMENT">Payment</option>
-                                    <option value="PURCHASE">Purchase</option>
-                                    <option value="SALE">Sale</option>
+
+                                    {formData.type == "EXPENSE"?
+                                    <>
+                                        <option value="BILL">Bill</option>
+                                        <option value="PURCHASE">Purchase</option>
+                                        <option value="SUBSCRIPTION">Subscription</option>
+                                        <option value="TRANSFER">Money Transfer</option>
+                                        <option value="STOCK">Stock Purchase</option>
+                                    </>:
+                                    <>
+                                        <option value="TRANSFER">Money Transfer</option>  
+                                        <option value="STOCK">Stock Sale</option>
+                                        <option value="PAYCHECK">Paycheck</option>
+                                    </>}
                                 </select>
-                                {/* <input 
+
+                                   {/* <input 
                                     required
                                     value={formData.category}
                                     id='category'
@@ -263,8 +301,8 @@ const Transaction = (props) => {
                                     className='rounded w-full p-2 transition focus:scale-105 bg-slate-800'
                                     type="text" /> */}
                             </div>
-                            <div className='my-1'>
-                                <div className='py-2 mx-2 text-lg'>
+                            <div className=''>
+                                <div className='m-1 text-lg'>
                                     Amount
                                 </div>
                                 <input 

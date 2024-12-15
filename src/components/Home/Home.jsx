@@ -9,6 +9,11 @@ import ButtonLogout from '../subcomponents/ButtonLogout';
 const Home = (value) => {
     const navigate = useNavigate()
     const token = window.localStorage.getItem('sessionToken')
+
+    const [pageState, setPageState] = useState({
+        loaded: false
+    })
+
     const [userData, setUserData] = useState({
         name:"",
         email:""
@@ -20,6 +25,10 @@ const Home = (value) => {
         .then(res => {
             // console.log(res.data, res.message, res.message == 'OK')
             if(res.message == 'OK'){
+                setPageState({
+                    ...pageState,
+                    loaded: true
+                })
                 setUserData(res.data)
             } else {
                 navigate('/signin')
@@ -59,8 +68,8 @@ const Home = (value) => {
                                 </div>
                                 <h1>
                                     
-                                    {userTransactions.length > 0 ? '$' + userTransactions.filter(entry => entry.category == 'PAYMENT')
-                                        .reduce((a,b) => a + Number(b.amount),0) : null}
+                                    ${userTransactions.length > 0 ? userTransactions.filter(entry => entry.type == 'PAYMENT' && entry.category == 'PAYCHECK' )
+                                        .reduce((a,b) => a + Number(b.amount),0) : 0}
                                 </h1>
                             </div>
                         </div>
@@ -92,27 +101,36 @@ const Home = (value) => {
                             New Entry</button>
                             <hr className='p-2 mt-3'/>
                         </div>
-                        <div className='grid px-2 col-span-4 grid-cols-2 sm:grid-cols-4'>
-                            <span className='text-lg font-bold text-slate-200'>Name</span>
+                        <div className='grid px-2 col-span-4 grid-cols-3 sm:grid-cols-5'>
+                            <span className='text-lg font-bold'>Name</span>
                             <span className='hidden sm:inline'>Date</span>
+                            <span className=''>Type</span>
                             <span className='text-right sm:text-left'>Amount</span>
                             <span className='hidden sm:inline'>Category</span>
                         </div>
                         <div className='col-span-4 bg-slate-500 p-4-3-2'>
-                            {userTransactions.length > 0 ? userTransactions.map((item,index)=> {return(
+                            { pageState.firstLoad ? 
+                            <>
+                             <div>
+                                Loading information...
+                            </div>
+                            </> : userTransactions.length > 0 ? userTransactions.map((item,index)=> {return(
                                 
                                 <div
                                     key={index} 
                                     onClick={() => navigate(`/transaction/${item.transaction_id}`)}
-                                    className='grid px-2 p-1 col-span-2 grid-cols-2 sm:grid-cols-4 rounded hover:bg-slate-600'>
+                                    className='grid columns-[10px] px-2 p-1 col-span-2 grid-cols-2 sm:grid-cols-5 rounded hover:bg-slate-600'>
                                     <div>
                                         {item.details}
                                     </div>
                                     <div className='hidden sm:inline'>
                                         {item.date.split('T')[0]}
                                     </div>
-                                    <div className='text-right sm:text-left text-lg font-light sm:text-base'>
-                                        {item.amount}
+                                    <div>
+                                        {item.type}
+                                    </div>
+                                    <div className={`text-right ${item.type == 'EXPENSE' ? 'text-red-300': ''} font-medium sm:text-left text-lg font-light sm:text-base`}>
+                                        {'$' + item.amount}
                                     </div>
                                     <div className='hidden sm:inline'>
                                         {item.category}
@@ -120,11 +138,12 @@ const Home = (value) => {
                                 </div>
                                 )}) : (
                                     <>
-                                        <div>
-                                            Attempting to load info.
-                                            Nothing to See here yet... 
-                                        </div>
-                                    </>)}    
+                                       <div className='px-2 p-1'>
+                                        No information was found for you. Create an Entry!
+                                       </div>
+                                    </>)
+                            }
+                            {}    
                         </div>
                     </Container>
                 </div>
